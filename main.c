@@ -1,16 +1,17 @@
 #include "stdlist.h"
 #include "string.h"
+#include <stdio.h>
 
 int main() {
     char key[] = {'h','e', 'l', 'l', 'o'};
     struct ListNode a, b, c, d, e, f, g;
-    a = new(key, key);
-    b = new(key, key);
-    c = new(key, key);
-    d = new(key, key);
-    e = new(key, key);
-    f = new(key, key);
-    g = new(key, key);
+    a = new();
+    b = new();
+    c = new();
+    d = new();
+    e = new();
+    f = new();
+    g = new();
     ListPush(&a, &b);
     ListPush(&b, &c);
     ListPush(&c, &d);
@@ -20,6 +21,21 @@ int main() {
     ListPush(&g, &e);
 
     ListPush(&b, &e);
+    ListFlush(&a);
+    traverse(&a);
+    printf("#################\n");
+    ListPop(&e);
     traverse(&a);
     return 0;
+}
+
+void traverse(ListNode* node){
+    {
+        struct ListNode *i = node;
+        do {
+            printf("OX%p, %d, last: %d, next: %d\n", i->Head, i->Index, i->Last != NULL ? i->Last->Index : -1,
+                   i->Next != NULL ? i->Next->Index : -1);
+            i = i->Next;
+        } while (i != NULL);
+    }
 }
