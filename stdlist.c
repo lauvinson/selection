@@ -5,18 +5,17 @@
 #include "stdio.h"
 #include "stdlist.h"
 
-struct ListNode new() {
-    struct ListNode i;
-    i.Index = 0;
-    i.Head = NULL;
-    i.Last = NULL;
-    i.Next = NULL;
-    return i;
+void NewListNode(struct ListNode *i) {
+    i->Index = 0;
+    i->Head = NULL;
+    i->Last = NULL;
+    i->Value = NULL;
+    i->Next = NULL;
 }
 
 void ListPush(struct ListNode *left, struct ListNode *right) {
     // No end to end
-    if (right == left->Head) {
+    if (right == left->Head || right == left) {
         return;
     }
     // link the severed node to the new end node

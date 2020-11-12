@@ -5,19 +5,17 @@
 #ifndef SELECTION_StdList_H
 #define SELECTION_StdList_H
 typedef int ListHead;
-typedef char ListK;
-typedef char ListV;
+typedef void *ListV;
 typedef struct ListNode ListNode;
 struct ListNode {
     struct ListNode *Head;
     ListHead Index;
-    ListK Key[255];
-    ListV Value[255];
+    ListV Value;
     struct ListNode *Last;
     struct ListNode *Next;
 };
 
-struct ListNode new();
+void NewListNode(struct ListNode *input);
 
 /**
  * push the right node to the next at left node

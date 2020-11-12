@@ -3,4 +3,4 @@ project(selection C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(selection main.c stdlist.h stdlist.c)
+add_executable(selection main.c stdlist.h stdlist.c map.h map.c)
