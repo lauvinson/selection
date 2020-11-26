@@ -4,21 +4,23 @@
 
 //[linux]
 //#include <stdio.h>
-//#include <sys/types.h>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 //[windows]
-#include <winsock.h>
+//#include <winsock.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <stdarg.h>
+#include<string.h>
 
 #define SOCK_PORT 8000
 #define BUFFER_LENGTH  1024
 #define MAX_CONN_LIMIT 512
 
-static printflush(const char * __restrict__ _Format,...);
+static int printflush(const char * __restrict__ _Format,...);
 
 int server_udp_execute(int argc, char *argv[]){
     int server_sockfd;
@@ -31,16 +33,6 @@ int server_udp_execute(int argc, char *argv[]){
     my_addr.sin_family=AF_INET; //设置为IP通信
     my_addr.sin_addr.s_addr=INADDR_ANY;//服务器IP地址--允许连接到所有本地地址上
     my_addr.sin_port=htons(8000); //服务器端口号
-
-    /*
-     * windows WSA
-     */
-    WSADATA wsaData;
-    int nRet;
-    if ((nRet = WSAStartup(MAKEWORD(2, 2), &wsaData)) != 0) {
-        printflush("WSAStartup failed\n");
-        exit(0);
-    }
 
     /*创建服务器端套接字--IPv4协议，面向无连接通信，UDP协议*/
     if((server_sockfd=socket(PF_INET,SOCK_DGRAM,0))<0)
@@ -71,11 +63,11 @@ int server_udp_execute(int argc, char *argv[]){
         buf[len]='\0';
         printflush("%s",buf);
     }
-    closesocket(server_sockfd);
+    shutdown(server_sockfd, SHUT_WR);
     return 0;
 }
 
-static printflush(const char * __restrict__ format,...){
+static int printflush(const char * __restrict__ format,...){
     va_list marker;
     va_start(marker, format);
     vprintf(format, marker);
