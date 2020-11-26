@@ -24,9 +24,9 @@ MapNode * MapGet(Map *m, const char *key){
 int MapHash(const char *str) {
     int hash = 0;
     for (int i = 0; i < strlen(str); i++) {
-        hash = 31 * hash + str[i];
+        hash = 31 * hash + ((str[i] < 0) ? 0 - str[i] : str[i]);
     }
-    return (hash < 0 ? 0 : hash ) % KVSize;
+    return hash % KVSize;
 }
 
 void MapPutHash(Map *m, char *key, ListNode *node){
