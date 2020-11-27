@@ -81,22 +81,16 @@ static void data_handle(void *sock_fd){
     int fd = *((int *) sock_fd);
     char buf[BUFFER_LENGTH];
     send(fd, "Welcome to my server\n", 21, 0);//发送欢迎信息
-    int timeout = 3000; //3s
-    int ret=setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, (char *) &timeout, sizeof(timeout));
-    if (ret < 0) {
-        perror("set timeout");
-    }else {
-        /*接收客户端的数据并将其发送给客户端--recv返回接收到的字节数，send返回发送的字节数*/
-        while ((len = recv(fd, buf, BUFSIZ, 0)) > 0) {
-            buf[len] = '\0';
-            if(!strcmp(buf,"quit")){
+    /*接收客户端的数据并将其发送给客户端--recv返回接收到的字节数，send返回发送的字节数*/
+    while ((len = recv(fd, buf, BUFSIZ, 0)) > 0) {
+        buf[len] = '\0';
+        if(!strcmp(buf,"quit")){
+            break;
+        }else {
+            printflush("%s", buf);
+            if (send(fd, buf, len, 0) < 0) {
+                perror("write");
                 break;
-            }else {
-                printflush("%s", buf);
-                if (send(fd, buf, len, 0) < 0) {
-                    perror("write");
-                    break;
-                }
             }
         }
     }
