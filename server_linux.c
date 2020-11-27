@@ -3,16 +3,12 @@
 //
 
 //[linux]
-//#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdarg.h>
 #include<string.h>
-
-//[windows]
-//#include <winsock.h>
 #include <stdio.h>
 #include <pthread.h>
 
@@ -21,7 +17,7 @@
 #define MAX_CONN_LIMIT 512
 
 static void data_handle(void *sock_fd);
-static printflush(const char * __restrict__ _Format,...);
+static void printflush(const char * __restrict__ format,...);
 
 int server_execute(int argc, char *argv[]) {
     int server_sockfd;//服务器端套接字
@@ -99,7 +95,7 @@ static void data_handle(void *sock_fd){
     pthread_exit(NULL);
 }
 
-static printflush(const char * __restrict__ format,...){
+static void printflush(const char * __restrict__ format,...){
     va_list marker;
     va_start(marker, format);
     vprintf(format, marker);

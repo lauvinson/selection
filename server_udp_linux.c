@@ -8,9 +8,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
-//[windows]
-//#include <winsock.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <stdarg.h>
@@ -20,7 +17,7 @@
 #define BUFFER_LENGTH  1024
 #define MAX_CONN_LIMIT 512
 
-static int printflush(const char * __restrict__ _Format,...);
+static void printflush(const char * __restrict__ format,...);
 
 int server_udp_execute(int argc, char *argv[]){
     int server_sockfd;
@@ -51,10 +48,9 @@ int server_udp_execute(int argc, char *argv[]){
     printflush("waiting for a packet...\n");
     while (1) {
         sin_size=sizeof(struct sockaddr_in);
-        pthread_t thread_id;
 
         /*接收客户端的数据并将其发送给客户端--recvfrom是无连接的*/
-        if((len=recvfrom(server_sockfd,buf,2,0,(struct sockaddr *)&remote_addr,&sin_size))<0)
+        if((len=recvfrom(server_sockfd,buf,2,0,(struct sockaddr *)&remote_addr,(unsigned int *)&sin_size))<0)
         {
             perror("recvfrom");
             return 1;
@@ -67,7 +63,7 @@ int server_udp_execute(int argc, char *argv[]){
     return 0;
 }
 
-static int printflush(const char * __restrict__ format,...){
+static void printflush(const char * __restrict__ format,...){
     va_list marker;
     va_start(marker, format);
     vprintf(format, marker);

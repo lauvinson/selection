@@ -2,15 +2,8 @@
 // Created by Administrator on 2020/11/26.
 //
 
-//[linux]
-//#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
 //[windows]
-//#include <winsock.h>
+#include <winsock.h>
 #include <stdio.h>
 #include <pthread.h>
 
@@ -18,7 +11,7 @@
 #define BUFFER_LENGTH  1024
 #define MAX_CONN_LIMIT 512
 
-static printflush(const char * __restrict__ _Format,...);
+static void printflush(const char * __restrict__ _Format,...);
 
 int server_udp_execute(int argc, char *argv[]){
     int server_sockfd;
@@ -75,7 +68,7 @@ int server_udp_execute(int argc, char *argv[]){
     return 0;
 }
 
-static printflush(const char * __restrict__ format,...){
+static void printflush(const char * __restrict__ format,...){
     va_list marker;
     va_start(marker, format);
     vprintf(format, marker);
